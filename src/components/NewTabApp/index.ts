@@ -1,0 +1,1 @@
+export { NewTabApp } from "./NewTabApp";

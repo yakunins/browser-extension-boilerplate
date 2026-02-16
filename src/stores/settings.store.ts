@@ -12,7 +12,7 @@ type Settings = {
 
 export type SettingsStore = Settings & {
     handleStorageChange: StorageChangeHandler;
-    setTheme: (val: Settings["theme"]) => void;
+    set: <K extends keyof Settings>(key: K, val: Settings[K]) => void;
 };
 
 const config = {
@@ -23,20 +23,30 @@ const initial: Settings = {
     theme: "light",
 };
 
+function buildAnnotations(defaults: Record<string, any>) {
+    const annotations: Record<string, any> = {};
+    for (const key of Object.keys(defaults)) {
+        annotations[key] = observable;
+    }
+    annotations["set"] = action.bound;
+    return annotations;
+}
+
 class ExtensionSettingsStore implements SettingsStore {
     theme = initial.theme;
 
     storage = getStorage(config.storageDebouncePeriod);
 
     constructor() {
-        makeObservable(this, {
-            theme: observable,
-            setTheme: action.bound,
-        });
+        makeObservable(this, buildAnnotations(initial));
 
         this.storage
-            .get({ theme: this.theme })
-            .then((res) => this.setTheme(res, false));
+            .getAll(initial)
+            .then((res) => {
+                for (const key of Object.keys(res)) {
+                    this.set(key as keyof Settings, res[key as keyof Settings], false);
+                }
+            });
 
         this.storage.addListener(this.handleStorageChange.bind(this));
     }
@@ -44,14 +54,16 @@ class ExtensionSettingsStore implements SettingsStore {
     handleStorageChange(changes: Changes, _namespace: Namespace) {
         for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
             if (oldValue === newValue) continue;
-            if (key === "theme") this.setTheme(newValue as any, false);
+            if (key in initial) {
+                this.set(key as keyof Settings, newValue as any, false);
+            }
         }
     }
 
-    setTheme(val: Settings["theme"], useStorage = true) {
-        if (this.theme === val) return;
-        this.theme = val;
-        if (useStorage) this.storage.debouncedSet({ theme: this.theme });
+    set<K extends keyof Settings>(key: K, val: Settings[K], useStorage = true) {
+        if (this[key] === val) return;
+        this[key] = val;
+        if (useStorage) this.storage.debouncedSet({ [key]: val });
     }
 }
 

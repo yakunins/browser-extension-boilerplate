@@ -19,7 +19,7 @@ export const PopupApp = observer(() => {
             <Radio
                 options={themeOptions}
                 defaultValue={store.theme}
-                onChange={(next) => store.setTheme(next as "light" | "dark")}
+                onChange={(next) => store.set("theme", next as "light" | "dark")}
                 legend="Theme"
             />
         </div>

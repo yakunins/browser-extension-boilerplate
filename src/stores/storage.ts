@@ -75,6 +75,28 @@ function browserStorageGet<T>(
     });
 }
 
+const getAll = async <T extends Record<string, any>>(defaults: T): Promise<T> => {
+    if (storageName === "chrome.storage") {
+        const items = await chromeStorageGet<any>(defaults);
+        return { ...defaults, ...items } as T;
+    }
+
+    if (storageName === "browser.storage") {
+        const items = await browserStorageGet<any>(defaults);
+        return { ...defaults, ...items } as T;
+    }
+
+    // localStorage
+    const result = { ...defaults };
+    for (const key of Object.keys(defaults)) {
+        const storedValue = localStorage.getItem(key);
+        if (storedValue !== null) {
+            (result as any)[key] = parseDigits(storedValue);
+        }
+    }
+    return result;
+};
+
 const send = (message: string) => chrome?.runtime?.sendMessage(message);
 const set = async (obj: StorageObject<string | number | boolean>) => {
     if (storageName === "chrome.storage") {
@@ -130,6 +152,7 @@ function addListener(callback: StorageChangeHandler) {
 export const storage = (debouncePeriod = 100) => {
     return {
         get,
+        getAll,
         set,
         addListener,
         debouncedSet: debouncedCallback(set, debouncePeriod),

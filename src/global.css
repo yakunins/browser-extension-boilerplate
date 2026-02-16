@@ -9,7 +9,7 @@
     --s-12px: 0.75rem;
     --s-16px: 1rem;
 
-    --typeface: "Segoe UI", Tahoma, sans-serif;
+    --typeface: 'Segoe UI', Tahoma, sans-serif;
     --c-text: #1a1a1a;
     --c-bg: #ffffff;
     --duration: 0.25s;
@@ -33,7 +33,19 @@ body {
     font-size: 1rem;
     color: var(--c-text);
     background-color: var(--c-bg);
-    transition: background-color var(--duration), color var(--duration);
+    transition:
+        background-color var(--duration),
+        color var(--duration);
+}
+
+h1 {
+    font-weight: 300;
+}
+h2 {
+    font-weight: 500;
+}
+h3 {
+    font-weight: 600;
 }
 
 button,

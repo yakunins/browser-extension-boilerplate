@@ -37,7 +37,7 @@ Changing a setting in the popup immediately reflects on the new tab page and opt
 ## Features
 
 - Multi-target build for **Chrome** and **Firefox** (manifest v3)
-- 4 entry points: new tab, popup, options page, background service worker
+- 5 entry points: new tab, popup, options page, background service worker, content script
 - MobX state management with Chrome Storage sync
 - React Aria Components for accessibility
 - Jest testing with ESM support
@@ -83,7 +83,7 @@ npm run style
 
 ```
 src/
-  components/         # Page-level components (App, PopupApp, OptionsApp)
+  components/         # Page-level components (NewTabApp, PopupApp, OptionsApp)
   components-shared/  # Reusable UI primitives (Checkbox, Radio, Slider, Icon)
   hooks/              # Custom React hooks (useSize, usePosition)
   stores/             # MobX stores with Chrome Storage sync
@@ -92,6 +92,7 @@ src/
   popup.tsx           # Popup entry point
   options.tsx         # Options page entry point
   background.ts       # Background service worker
+  content.ts          # Content script
 public/               # HTML templates, manifests, icons
 webpack/              # Webpack configurations
 ```

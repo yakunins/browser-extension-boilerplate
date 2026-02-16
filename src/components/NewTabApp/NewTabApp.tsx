@@ -3,18 +3,18 @@ import { observer } from "mobx-react";
 import { SettingsStore } from "../../stores";
 import { Radio } from "../../components-shared";
 import { cx } from "../../utils";
-import "./app.css";
+import "./newtab-app.css";
 
 const themeOptions = [
     { value: "light", children: "Light" },
     { value: "dark", children: "Dark" },
 ];
 
-export const App = observer(() => {
+export const NewTabApp = observer(() => {
     const store = SettingsStore;
 
     return (
-        <div className={cx("app", store.theme === "dark" && "theme-dark")}>
+        <div className={cx("newtab-app", store.theme === "dark" && "theme-dark")}>
             <h1>New Tab</h1>
             <p>
                 This is a browser extension boilerplate built with React, MobX,
@@ -23,7 +23,7 @@ export const App = observer(() => {
             <Radio
                 options={themeOptions}
                 defaultValue={store.theme}
-                onChange={(next) => store.setTheme(next as "light" | "dark")}
+                onChange={(next) => store.set("theme", next as "light" | "dark")}
                 legend="Theme"
             />
         </div>
