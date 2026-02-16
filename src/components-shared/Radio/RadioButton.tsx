@@ -11,7 +11,7 @@ export type RadioButton = InputProps & {
 
 export const RadioButton = memo(
     ({ children, checked, className, name, value, ...rest }: RadioButton) => {
-        const inputRef = useRef<HTMLInputElement>(null!);
+        const inputRef = useRef<HTMLInputElement>(null);
         const [focused, setFocused] = useState(false);
         const generatedId = useId();
         const id = rest.id || generatedId;

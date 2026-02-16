@@ -1,13 +1,13 @@
-type MergeFunction<T = any> = (prev: T | undefined, next: T) => T;
-export function debouncedCallback<T extends any[]>(
+type MergeFunction = (prev: unknown, next: unknown) => unknown;
+export function debouncedCallback<T extends unknown[]>(
     fn: (...args: T) => void,
     debouncePeriod = 100,
     mergeItem: MergeFunction = sumObj
 ) {
     let timerId: ReturnType<typeof setTimeout> | null = null;
-    let accumulatedArgs: any[] = [];
+    let accumulatedArgs: unknown[] = [];
 
-    const mergeArgs = (prev: any[], next: any[]): any[] =>
+    const mergeArgs = (prev: unknown[], next: unknown[]): unknown[] =>
         next.map((item, i) => mergeItem(prev[i], item));
 
     return (...args: T) => {
@@ -22,7 +22,15 @@ export function debouncedCallback<T extends any[]>(
     };
 }
 
-const sumObj = (o1: unknown, o2: unknown) => {
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+    return (
+        typeof value === "object" &&
+        value !== null &&
+        Object.getPrototypeOf(value) === Object.prototype
+    );
+}
+
+const sumObj = (o1: unknown, o2: unknown): unknown => {
     const t1 = typeof o1;
     const t2 = typeof o2;
     if (t1 !== t2) return o2;
@@ -31,19 +39,19 @@ const sumObj = (o1: unknown, o2: unknown) => {
     if (t1 === "undefined") return o2;
     if (t2 === "undefined") return o2;
 
-    if (["number", "string", "boolean"].includes(t1)) {
-        return (o1 as any) + o2;
+    if (typeof o1 === "number" && typeof o2 === "number") {
+        return o1 + o2;
+    }
+    if (typeof o1 === "string" && typeof o2 === "string") {
+        return o1 + o2;
     }
 
     if (Array.isArray(o1) && Array.isArray(o2)) {
         return [o1, o2].flat();
     }
 
-    if (
-        (o1 as Object).constructor.name === "Object" &&
-        (o2 as Object).constructor.name === "Object"
-    ) {
-        return { ...(o1 as Object), ...(o2 as Object) };
+    if (isPlainObject(o1) && isPlainObject(o2)) {
+        return { ...o1, ...o2 };
     }
 
     return o2;

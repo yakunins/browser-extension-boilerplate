@@ -10,6 +10,7 @@ const chromeConfig = {
             filename: "[name].js",
         },
         plugins: [
+            ...(config.plugins || []),
             new CopyPlugin({
                 patterns: [
                     {

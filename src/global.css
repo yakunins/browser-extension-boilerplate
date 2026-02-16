@@ -12,6 +12,11 @@
     --typeface: 'Segoe UI', Tahoma, sans-serif;
     --c-text: #1a1a1a;
     --c-bg: #ffffff;
+    --c-link: #1a6be0;
+    --c-link-hover: #1252b0;
+    --c-link-visited: #6e3cb0;
+    --c-border-ui: #c0c0c0;
+    --c-surface-ui: #f5f5f5;
     --duration: 0.25s;
     --radius: var(--s-6px);
     --padding: var(--s-8px);
@@ -20,6 +25,11 @@
 .theme-dark {
     --c-text: #e0e0e0;
     --c-bg: #1a1a1a;
+    --c-link: #6eb0f5;
+    --c-link-hover: #93c5fd;
+    --c-link-visited: #b09ade;
+    --c-border-ui: #444444;
+    --c-surface-ui: #2a2a2a;
 }
 
 html,
@@ -48,10 +58,45 @@ h3 {
     font-weight: 600;
 }
 
+a {
+    color: var(--c-link);
+    transition: color var(--duration);
+
+    &:hover {
+        color: var(--c-link-hover);
+    }
+    &:visited {
+        color: var(--c-link-visited);
+    }
+}
+
 button,
 input,
 textarea {
     font-size: 1rem;
+    color: var(--c-text);
+    background-color: var(--c-surface-ui);
+    border: var(--s-1px) solid var(--c-border-ui);
+    border-radius: var(--radius);
+    transition-property: outline-color, outline-offset, background-color, border-color, color;
+    transition-duration: var(--duration);
+}
+
+button {
+    cursor: pointer;
+    padding: var(--s-6px) var(--s-12px);
+
+    &:hover {
+        background-color: color-mix(in srgb, var(--c-surface-ui), var(--c-text) 8%);
+    }
+    &:active {
+        background-color: color-mix(in srgb, var(--c-surface-ui), var(--c-text) 16%);
+    }
+}
+
+input,
+textarea {
+    padding: var(--s-4px) var(--s-6px);
 }
 
 button,
@@ -61,11 +106,8 @@ textarea {
     outline-style: solid;
     outline-width: var(--s-2px);
 
-    transition-property: outline-color, outline-offset, background-color;
-    transition-duration: var(--duration);
-
     &:focus-visible {
-        outline-color: var(--c-text, currentColor);
+        outline-color: var(--c-link);
         outline-style: solid;
         outline-width: var(--s-2px);
     }

@@ -23,8 +23,8 @@ const initial: Settings = {
     theme: "light",
 };
 
-function buildAnnotations(defaults: Record<string, any>) {
-    const annotations: Record<string, any> = {};
+function buildAnnotations(defaults: Record<string, unknown>) {
+    const annotations: Record<string, typeof observable | typeof action.bound> = {};
     for (const key of Object.keys(defaults)) {
         annotations[key] = observable;
     }
@@ -55,7 +55,7 @@ class ExtensionSettingsStore implements SettingsStore {
         for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
             if (oldValue === newValue) continue;
             if (key in initial) {
-                this.set(key as keyof Settings, newValue as any, false);
+                this.set(key as keyof Settings, newValue as Settings[keyof Settings], false);
             }
         }
     }

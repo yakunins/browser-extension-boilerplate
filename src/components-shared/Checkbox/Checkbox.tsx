@@ -19,7 +19,7 @@ export const Checkbox = memo(
         const [isChecked, setChecked] = useState(defaultValue);
         const [isFocused, setFocused] = useState(false);
 
-        const inputRef = useRef<HTMLInputElement>(null!);
+        const inputRef = useRef<HTMLInputElement>(null);
         const generatedId = useId();
         const id = rest.id || generatedId;
 

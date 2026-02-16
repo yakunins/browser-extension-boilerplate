@@ -3,7 +3,7 @@ const chromeConfig = require("./webpack.chrome.js");
 const firefoxConfig = require("./webpack.firefox.js");
 
 const devConfig = {
-    devtool: "inline-source-map",
+    devtool: "source-map",
     mode: "development",
 };
 

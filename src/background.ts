@@ -1,7 +1,8 @@
 import { storage } from './stores/storage';
 
+declare const browser: typeof chrome;
 const runtime =
-    globalThis.chrome?.runtime ?? (globalThis as any).browser?.runtime;
+    globalThis.chrome?.runtime ?? browser?.runtime;
 
 runtime?.onInstalled.addListener((details: chrome.runtime.InstalledDetails) => {
     if (details.reason === 'install') {

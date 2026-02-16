@@ -18,7 +18,7 @@ export const Radio = memo(
     ({ defaultValue, options, onChange, legend, name, ...rest }: Radio) => {
         const generatedId = useId();
         const id = name || generatedId;
-        const container = useRef<HTMLDivElement>(null!);
+        const container = useRef<HTMLDivElement>(null);
         const { width } = useSize(container);
         const [value, setValue] = useState<RadioButton["value"]>(
             defaultValue || getValue(options)
@@ -103,8 +103,10 @@ const getValue = (opts: RadioButton[]): RadioButton["value"] => {
 };
 
 const getFieldSetValue = (opts: HTMLCollection): RadioButton["value"] => {
-    const opts2 = Array.from(opts) as HTMLInputElement[];
-    const checked = opts2.find((i) => i.checked);
+    const inputs = Array.from(opts).filter(
+        (el): el is HTMLInputElement => el instanceof HTMLInputElement
+    );
+    const checked = inputs.find((i) => i.checked);
     if (checked) return checked.value;
-    return opts2[0].value;
+    return inputs[0].value;
 };

@@ -49,7 +49,7 @@ const get = async <V>(obj: StorageObject<V>): Promise<V> => {
 };
 
 function chromeStorageGet<T>(
-    keys: string | string[] | { [key: string]: any }
+    keys: string | string[] | { [key: string]: unknown }
 ): Promise<{ [key: string]: T }> {
     return new Promise((resolve, reject) => {
         chrome?.storage?.sync.get(keys, (result) => {
@@ -62,7 +62,7 @@ function chromeStorageGet<T>(
     });
 }
 function browserStorageGet<T>(
-    keys: string | string[] | { [key: string]: any }
+    keys: string | string[] | { [key: string]: unknown }
 ): Promise<{ [key: string]: T }> {
     return new Promise((resolve, reject) => {
         browser?.storage?.sync.get(keys, (result) => {
@@ -75,26 +75,26 @@ function browserStorageGet<T>(
     });
 }
 
-const getAll = async <T extends Record<string, any>>(defaults: T): Promise<T> => {
+const getAll = async <T extends Record<string, unknown>>(defaults: T): Promise<T> => {
     if (storageName === "chrome.storage") {
-        const items = await chromeStorageGet<any>(defaults);
+        const items = await chromeStorageGet<T[keyof T]>(defaults);
         return { ...defaults, ...items } as T;
     }
 
     if (storageName === "browser.storage") {
-        const items = await browserStorageGet<any>(defaults);
+        const items = await browserStorageGet<T[keyof T]>(defaults);
         return { ...defaults, ...items } as T;
     }
 
     // localStorage
-    const result = { ...defaults };
+    const result: Record<string, unknown> = { ...defaults };
     for (const key of Object.keys(defaults)) {
         const storedValue = localStorage.getItem(key);
         if (storedValue !== null) {
-            (result as any)[key] = parseDigits(storedValue);
+            result[key] = parseDigits(storedValue);
         }
     }
-    return result;
+    return result as T;
 };
 
 const send = (message: string) => chrome?.runtime?.sendMessage(message);

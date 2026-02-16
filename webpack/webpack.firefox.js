@@ -10,6 +10,7 @@ const firefoxConfig = {
             filename: "[name].js",
         },
         plugins: [
+            ...(config.plugins || []),
             new CopyPlugin({
                 patterns: [
                     {

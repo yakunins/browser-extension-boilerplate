@@ -5,7 +5,7 @@ type Size = {
     height: number;
 };
 
-export const useSize = (ref: React.RefObject<HTMLElement>): Size => {
+export const useSize = (ref: React.RefObject<HTMLElement | null>): Size => {
     const [size, setSize] = useState<Size>({ width: 0, height: 0 });
 
     useEffect(() => {
