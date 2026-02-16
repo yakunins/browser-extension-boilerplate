@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Browser Extension Boilerplate",
+    "description": "A starter template for building cross-browser extensions with React, MobX, and TypeScript.",
+    "version": "0.1.0",
+    "options_ui": {
+        "page": "options.html"
+    },
+    "icons": {
+        "48": "icon-48.png",
+        "128": "icon-128.png"
+    },
+    "action": {
+        "default_icon": { "16": "icon-16.png" },
+        "default_popup": "popup.html"
+    },
+    "chrome_url_overrides": {
+        "newtab": "newtab.html"
+    },
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["js/content.js"]
+        }
+    ],
+    "permissions": ["storage"],
+    "host_permissions": []
+}

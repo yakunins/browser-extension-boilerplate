@@ -1,0 +1,13 @@
+.options-app {
+    padding: 2rem;
+    max-width: 32rem;
+    margin: 0 auto;
+    color: var(--c-text);
+    background-color: var(--c-bg);
+    transition: background-color var(--duration), color var(--duration);
+}
+
+.options-app h1 {
+    font-size: 1.5rem;
+    margin: 0 0 1rem;
+}

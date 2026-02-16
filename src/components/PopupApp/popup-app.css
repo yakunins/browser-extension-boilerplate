@@ -1,0 +1,11 @@
+.popup-app {
+    padding: 1rem;
+    color: var(--c-text);
+    background-color: var(--c-bg);
+    transition: background-color var(--duration), color var(--duration);
+}
+
+.popup-app h2 {
+    font-size: 1rem;
+    margin: 0 0 0.75rem;
+}

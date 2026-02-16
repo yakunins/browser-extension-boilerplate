@@ -1,0 +1,175 @@
+.radio {
+    --s-1px: 0.0625rem;
+    --s-2px: 0.125rem;
+    --s-3px: 0.1875rem;
+    --s-4px: 0.25rem;
+    --s-6px: 0.375rem;
+
+    --rad: calc(var(--radius) + var(--s-1px));
+    --padding: var(var(--padding), 0.5rem); /* 8px */
+
+    .fieldset-style-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--padding);
+    }
+
+    fieldset& {
+        border: unset;
+        margin: unset;
+        padding: unset;
+
+        legend {
+            padding: unset;
+            cursor: default;
+        }
+    }
+
+    .radio-options {
+        --c-accent: var(--c-text, currentColor);
+        --c-border: var(--c-accent);
+        --c-fill: color-mix(in srgb, var(--c-accent), transparent 90%);
+        --c-shade: color-mix(in srgb, var(--c-accent), transparent 65%);
+        --border-width: var(--s-2px);
+
+        border-radius: var(--rad);
+        display: flex;
+        position: relative;
+
+        .radio-button {
+            border-radius: var(--rad);
+            flex-grow: 1;
+            position: relative;
+
+            &:before {
+                border-radius: var(--radius);
+                content: "";
+                position: absolute;
+                top: var(--border-width);
+                bottom: var(--border-width);
+                left: var(--border-width);
+                right: var(--border-width);
+
+                transition-property: backdrop-filter;
+                transition-duration: var(--duration, 0.2s);
+
+                --c-mask: rgba(0, 0, 0, 0.5);
+                mask-image:
+                    linear-gradient(
+                        90deg,
+                        transparent,
+                        var(--c-mask),
+                        var(--c-mask),
+                        transparent
+                    ),
+                    linear-gradient(
+                        0deg,
+                        transparent,
+                        var(--c-mask),
+                        var(--c-mask),
+                        transparent
+                    );
+            }
+            &:hover:before {
+                backdrop-filter: saturate(1.075) brightness(1.075);
+            }
+            &.checked:before,
+            &.checked:hover:before {
+                backdrop-filter: saturate(1) brightness(1);
+            }
+        }
+
+        .radio-button > label {
+            box-sizing: border-box;
+            cursor: pointer;
+            display: flex;
+            place-items: center;
+            place-content: center;
+            height: 100%; /* must fit into button */
+            line-height: 1;
+            padding: calc(var(--padding) * 1.5);
+            padding-top: calc(var(--padding) * 1.5 - var(--s-1px));
+            position: relative;
+            user-select: none;
+            z-index: 2;
+
+            & > * {
+                text-align: center;
+            }
+        }
+        .checked.radio-button > .tooltip-anchor,
+        .checked.radio-button > label {
+            cursor: default;
+
+            &:hover:before {
+                opacity: 0;
+            }
+        }
+
+        /* first child */
+        &.checked-first .checked-indicator,
+        .radio-button:nth-child(2) label {
+            border-start-start-radius: var(--rad);
+            border-end-start-radius: var(--rad);
+        }
+
+        /* last child */
+        &.checked-last .checked-indicator,
+        .radio-button:last-child label {
+            border-end-end-radius: var(--rad);
+            border-start-end-radius: var(--rad);
+        }
+
+        .checked-indicator {
+            border-radius: var(--rad);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+
+            /* indicator's shape */
+            &:after {
+                outline: var(--border-width) solid transparent; /* focus ring */
+                border-radius: var(--radius);
+                box-shadow:
+                    0 0 0 100vmax var(--c-fill),
+                    0 0 2vmax var(--border-width) var(--c-shade);
+                box-shadow:
+                    0 0 0 100vmax var(--c-fill),
+                    0 0 0 var(--border-width)
+                        color-mix(in srgb, var(--c-shade), transparent 96%),
+                    0 0 2vmax var(--border-width) var(--c-shade);
+                content: "";
+                position: absolute;
+                top: var(--border-width);
+                left: calc(var(--checked-left) + var(--border-width));
+                width: calc(var(--checked-width) - var(--border-width) * 2);
+                height: calc(100% - var(--border-width) * 2);
+                box-sizing: border-box;
+                transition-property: left, width, outline, transform;
+                transition-duration: var(--duration, 0.2s);
+            }
+        }
+
+        &:focus-within .checked-indicator:after {
+            outline: var(--border-width) solid var(--c-border); /* focus ring */
+        }
+    }
+}
+
+.visually-hidden {
+    border: none;
+    display: table-cell;
+    float: left;
+    height: 1px;
+    width: 1px;
+    max-width: 1px;
+    min-width: 1px;
+    margin: -0.5em -1px -0.5em 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+}

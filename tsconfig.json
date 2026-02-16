@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "jsx": "react-jsx",
+        "moduleResolution": "bundler",
+        "module": "esnext",
+        "noEmitOnError": true,
+        "outDir": "dist/js",
+        "rootDir": "src",
+        "sourceMap": false,
+        "strict": true,
+        "target": "es2017",
+        "lib": ["dom", "es2020"],
+        "typeRoots": ["node_modules/@types"],
+        "types": ["react", "chrome", "jest"]
+    }
+}
