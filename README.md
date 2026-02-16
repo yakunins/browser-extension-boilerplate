@@ -1,6 +1,38 @@
-# Browser Extension Boilerplate
+# Stateful Browser Extension Boilerplate
 
-A cross-browser extension starter template built with **React 19**, **MobX**, **TypeScript**, and **Webpack 5**.
+A cross-browser extension starter template with synchronized state across all entry points, built with **React 19**, **MobX**, **TypeScript**, and **Webpack 5**.
+
+## State Propagation
+
+Each entry point (new tab, popup, options) runs in its own context with its own MobX store instance. State stays in sync across all of them through Chrome Storage API:
+
+```
+ User changes a setting in any entry point
+                  |
+                  v
+ ┌──────────────────────────────┐
+ │  MobX Store (local context)  │──> UI re-renders locally
+ └──────────────┬───────────────┘
+                |
+                v
+ ┌──────────────────────────────┐
+ │  chrome.storage.sync.set()   │   (debounced write)
+ └──────────────┬───────────────┘
+                |
+                v
+ ┌──────────────────────────────┐
+ │  chrome.storage.onChanged    │   (fired by browser)
+ └──┬───────────┬───────────┬───┘
+    |           |           |
+    v           v           v
+ New Tab     Popup      Options     (every other context)
+  Store       Store       Store
+    |           |           |
+    v           v           v
+ UI update   UI update   UI update
+```
+
+Changing a setting in the popup immediately reflects on the new tab page and options page, and vice versa — no manual messaging or ports needed.
 
 ## Features
 
@@ -10,7 +42,7 @@ A cross-browser extension starter template built with **React 19**, **MobX**, **
 - React Aria Components for accessibility
 - Jest testing with ESM support
 - Prettier code formatting
-- GitHub Actions CI (Node 18/20/22)
+
 
 ## Getting Started
 
@@ -34,12 +66,14 @@ npm run style
 ## Loading the Extension
 
 ### Chrome
+
 1. Run `npm run build`
 2. Open `chrome://extensions`
 3. Enable "Developer mode"
 4. Click "Load unpacked" and select the `dist/chrome` folder
 
 ### Firefox
+
 1. Run `npm run build`
 2. Open `about:debugging#/runtime/this-firefox`
 3. Click "Load Temporary Add-on"
