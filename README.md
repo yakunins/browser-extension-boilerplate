@@ -24,7 +24,7 @@ Each entry point runs in its own context with its own MobX store instance. State
         ↓          ↓           ↓
      New Tab     Popup      Options    (across all browsers/tabs)
       Store      Store       Store
-        ↓         ↓           ↓
+        ↓          ↓           ↓
     UI update   UI update   UI update
 ```
 
