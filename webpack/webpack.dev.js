@@ -5,6 +5,9 @@ const firefoxConfig = require("./webpack.firefox.js");
 const devConfig = {
     devtool: "source-map",
     mode: "development",
+    watchOptions: {
+        ignored: /node_modules/,
+    },
 };
 
 module.exports = [

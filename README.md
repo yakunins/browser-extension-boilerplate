@@ -1,38 +1,35 @@
-# Stateful Browser Extension Boilerplate
+# Browser Extension Boilerplate
 
-A cross-browser extension starter template with synchronized state across all entry points, built with **React 19**, **MobX**, **TypeScript**, and **Webpack 5**.
+A cross-browser extension starter template with **synchronized state across all entry points**: content, newtab, options, popup, service worker. Built with React, MobX, TypeScript, and Webpack.
 
 ## State Propagation
 
-Each entry point (new tab, popup, options) runs in its own context with its own MobX store instance. State stays in sync across all of them through Chrome Storage API:
+Each entry point runs in its own context with its own MobX store instance. State stays in sync across all of them through Chrome Storage API:
 
 ```
  User changes a setting in any entry point
                   |
-                  v
+                  ↓
  ┌──────────────────────────────┐
- │  MobX Store (local context)  │──> UI re-renders locally
+ │  MobX Store (local context)  │──→ UI re-renders locally
  └──────────────┬───────────────┘
-                |
-                v
+                ↓
  ┌──────────────────────────────┐
  │  chrome.storage.sync.set()   │   (debounced write)
  └──────────────┬───────────────┘
-                |
-                v
+                ↓
  ┌──────────────────────────────┐
  │  chrome.storage.onChanged    │   (fired by browser)
  └──┬───────────┬───────────┬───┘
-    |           |           |
-    v           v           v
- New Tab     Popup      Options     (every other context)
+    v           ↓           ↓
+ New Tab     Popup      Options     (across all browsers/tabs)
   Store       Store       Store
     |           |           |
-    v           v           v
+    ↓           ↓           ↓
  UI update   UI update   UI update
 ```
 
-Changing a setting in the popup immediately reflects on the new tab page and options page, and vice versa — no manual messaging or ports needed.
+Changing a setting in the popup reflects on the new tab page and options page, and vice versa — no manual messaging or ports needed.
 
 ## Features
 
@@ -42,7 +39,6 @@ Changing a setting in the popup immediately reflects on the new tab page and opt
 - React Aria Components for accessibility
 - Jest testing with ESM support
 - Prettier code formatting
-
 
 ## Getting Started
 
