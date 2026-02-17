@@ -8,8 +8,8 @@ Each entry point runs in its own context with its own MobX store instance. State
 
 ```
  User changes a setting in any entry point
-    ──────────────┬───────────────
-                  ↓
+    ───────────────┬───────────────
+                   ↓
     ┌──────────────────────────────┐
     │  MobX Store (local context)  │──→ UI re-renders locally
     └──────────────┬───────────────┘
@@ -20,11 +20,10 @@ Each entry point runs in its own context with its own MobX store instance. State
                    ↓
     ┌──────────────────────────────┐
     │  chrome.storage.onChanged    │   (fired by browser)
-    └──┬───────────┬───────────┬───┘
-       ↓           ↓           ↓
-    New Tab     Popup      Options     (across all browsers/tabs)
-      Store       Store       Store
-        |           |           |
+    └───┬──────────┬───────────┬───┘
+        ↓          ↓           ↓
+    New Tab      Popup      Options     (across all browsers/tabs)
+     Store       Store       Store
         ↓           ↓           ↓
     UI update   UI update   UI update
 ```
